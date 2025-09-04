@@ -73,9 +73,6 @@ class CreateOrder implements CreateOrderInterface
         if(!$order->getPaymentMethod()){
             throw new LocalizedException(__('Payment Method is required'));
         }
-        if(!$order->getShippingInformation()){
-            throw new LocalizedException(__('Shipping Information is required'));
-        }
     }
 
     /**
