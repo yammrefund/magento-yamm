@@ -47,8 +47,7 @@ class CreateOrder implements CreateOrderInterface
             $quote->getPayment()->setMethod($order->getPaymentMethod());
             $this->cartRepository->save($quote);
             if($order->getDiscount()){
-                $quote->setData(Discount::DISCOUNT_CODE, $order->getDiscount());
-                $quote->setData(Discount::LABEL_DATA_FIELD, $order->getDiscountDescription());
+                $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());
             }
             $quote->collectTotals();
             $this->cartRepository->save($quote);
@@ -92,5 +91,16 @@ class CreateOrder implements CreateOrderInterface
             $quoteId =  $this->quoteManagement->createEmptyCart();
         }
         return $this->cartRepository->get($quoteId);
+    }
+
+    private function applyCustomDiscount(CartInterface $quote, ?float $discount = 0, ?string $discountDescription = null)
+    {
+        $quote->setData(Discount::DISCOUNT_CODE, $discount);
+        $quote->setData(Discount::LABEL_DATA_FIELD, $discountDescription);
+        foreach($quote->getAllAddresses() as $address){
+            $address->setDiscountAmount(-$discount)
+                ->setBaseDiscountAmount(-$discount)
+                ->setDiscountDescription($discountDescription);
+        }
     }
 }
