@@ -66,22 +66,11 @@ class CreateOrder implements CreateOrderInterface
                 throw new LocalizedException(__('Customer with id %1 not found', $order->getCustomerId()));
             }
         }
-        if(!$order->getCustomerId()){
-            if(!$order->getCustomerEmail()){
-                throw new LocalizedException(__('Customer Email is required'));
-            }
-            if(!$order->getCustomerFirstname()){
-                throw new LocalizedException(__('Customer First name is required'));
-            }
-            if(!$order->getCustomerLastname()){
-                throw new LocalizedException(__('Customer Last name is required'));
-            }
-        }
         if(!$order->getPaymentMethod()){
             throw new LocalizedException(__('Payment Method is required'));
         }
-        if(!$order->getShippingMethod()){
-            throw new LocalizedException(__('Shipping Method is required'));
+        if(!$order->getShippingInformation()){
+            throw new LocalizedException(__('Shipping Information is required'));
         }
     }
 
