@@ -102,5 +102,6 @@ class CreateOrder implements CreateOrderInterface
                 ->setBaseDiscountAmount(-$discount)
                 ->setDiscountDescription($discountDescription);
         }
+        $this->cartRepository->save($quote);
     }
 }

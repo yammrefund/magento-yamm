@@ -36,7 +36,7 @@
                 comment="Yamm Reference ID"/>
         <column xsi:type="mediumtext" name="products" nullable="true"
                 comment="Array of Products names"/>
-        <column xsi:type="decimal" name="order_total" precision="10" scale="2"  nullable="true" comment="Order Total"/>
+        <column xsi:type="decimal" name="order_total" precision="10" scale="2" nullable="true" comment="Order Total"/>
         <column xsi:type="smallint" name="status" padding="5" unsigned="false" nullable="false" default="0"
                 comment="Status"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
@@ -62,4 +62,11 @@
         <column xsi:type="varchar" length="255" name="last_status" nullable="true" comment="Last Status before refund"/>
         <column xsi:type="datetime" name="first_complete_at" nullable="true" comment="Last Status before refund"/>
     </table>
+    <table name="quote" resource="default">
+        <column xsi:type="decimal" name="yamm_discount" scale="4" precision="12" unsigned="false"
+                nullable="true" comment="Yamm Discount Amount"/>
+        <column xsi:type="varchar" length="255" name="yamm_discount_description" nullable="true"
+                comment="Yamm Discount Description"/>
+    </table>
+
 </schema>

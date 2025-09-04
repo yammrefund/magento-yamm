@@ -28,6 +28,7 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         }
 
         parent::collect($quote, $shippingAssignment, $total);
+
         if (!$quote->getData(self::DISCOUNT_CODE)) {
             return $this;
         }
