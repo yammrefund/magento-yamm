@@ -37,8 +37,10 @@ class CreateOrder implements CreateOrderInterface
         try {
             $this->validateRequest($order);
             $quote = $this->createQuote($order);
-            $quote->setItems(null); // reset cart
-            $quote->setItems($order->getItems());
+            foreach ($order->getItems() as $item) {
+                $quote->addItem($item);
+            }
+            $this->cartRepository->save($quote);
             $quote->getBillingAddress()->addData($order->getShippingAddress()->getData());
             $quote->getShippingAddress()->addData($order->getBillingAddress()->getData());
             $quote->getShippingAddress()
