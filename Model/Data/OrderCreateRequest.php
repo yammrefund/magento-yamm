@@ -34,82 +34,19 @@ class OrderCreateRequest extends DataObject implements OrderCreateRequestInterfa
     /**
      * @inheritDoc
      */
-    public function getCustomerEmail()
+    public function getShippingInformation()
     {
-        return $this->_getData(self::CUSTOMER_EMAIL);
+        return $this->_getData(self::SHIPPING_INFORMATION);
     }
 
     /**
      * @inheritDoc
      */
-    public function setCustomerEmail($customerEmail)
+    public function setShippingInformation($shippingInformation)
     {
-        return $this->setData(self::CUSTOMER_EMAIL, $customerEmail);
+        return $this->setData(self::SHIPPING_INFORMATION, $shippingInformation);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCustomerFirstname()
-    {
-        return $this->_getData(self::CUSTOMER_FIRSTNAME);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setCustomerFirstname($customerFirstname)
-    {
-        return $this->setData(self::CUSTOMER_FIRSTNAME, $customerFirstname);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCustomerLastname()
-    {
-        return $this->_getData(self::CUSTOMER_LASTNAME);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setCustomerLastname($customerLastname)
-    {
-        return $this->setData(self::CUSTOMER_LASTNAME, $customerLastname);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getShippingAddress()
-    {
-        return $this->_getData(self::SHIPPING_ADDRESS);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        return $this->setData(self::SHIPPING_ADDRESS, $shippingAddress);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getBillingAddress()
-    {
-        return $this->_getData(self::BILLING_ADDRESS);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setBillingAddress($billingAddress)
-    {
-        return $this->setData(self::BILLING_ADDRESS, $billingAddress);
-    }
 
     /**
      * @inheritDoc
@@ -125,22 +62,6 @@ class OrderCreateRequest extends DataObject implements OrderCreateRequestInterfa
     public function setPaymentMethod($paymentMethod)
     {
         return $this->setData(self::PAYMENT_METHOD, $paymentMethod);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getShippingMethod()
-    {
-        return $this->_getData(self::SHIPPING_METHOD);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setShippingMethod($shippingMethod)
-    {
-        return $this->setData(self::SHIPPING_METHOD, $shippingMethod);
     }
 
     /**

@@ -9,6 +9,7 @@
 namespace Mageserv\Yamm\Model\Service;
 
 
+use Magento\Checkout\Api\ShippingInformationManagementInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
@@ -25,7 +26,8 @@ class CreateOrder implements CreateOrderInterface
         private readonly CartManagementInterface $quoteManagement,
         private readonly CartRepositoryInterface $cartRepository,
         private readonly CustomerRepositoryInterface $customerRepository,
-        private readonly OrderRepositoryInterface $orderRepository
+        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly ShippingInformationManagementInterface $shippingInformationManagement
     )
     {
     }
@@ -36,20 +38,16 @@ class CreateOrder implements CreateOrderInterface
         try{
             $this->validateRequest($order);
             $quote = $this->createQuote($order);
-            $quote->setShippingAddress($order->getShippingAddress())
-                ->setBillingAddress($order->getBillingAddress());
             $quote->setItems($order->getItems());
-            $quote->getShippingAddress()->setCollectShippingRates(true)
-                ->collectShippingRates()
-                ->setShippingMethod($order->getShippingMethod());
+            $this->shippingInformationManagement->saveAddressInformation($quote->getId(), $order->getShippingInformation());
             $quote->getPayment()->setMethod($order->getPaymentMethod());
             if($order->getDiscount()){
                 $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());
             }
             $quote->collectTotals();
             $this->cartRepository->save($quote);
-            $order = $this->quoteManagement->submit($quote);
-            return $this->orderRepository->get($order->getId());
+            $orderId = $this->quoteManagement->placeOrder($quote->getId());
+            return $this->orderRepository->get($orderId);
         }catch (\Exception $e){
             throw new LocalizedException(__('Unable to create order. %1', $e->getMessage() ));
         }

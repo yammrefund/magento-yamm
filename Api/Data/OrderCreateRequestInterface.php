@@ -5,13 +5,8 @@ namespace Mageserv\Yamm\Api\Data;
 interface OrderCreateRequestInterface
 {
     const CUSTOMER_ID = "customer_id";
-    const CUSTOMER_EMAIL = "customer_email";
-    const CUSTOMER_FIRSTNAME = "customer_firstname";
-    const CUSTOMER_LASTNAME = "customer_lastname";
-    const SHIPPING_ADDRESS = "shipping_address";
-    const BILLING_ADDRESS = "billing_address";
+    const SHIPPING_INFORMATION = "shipping_information";
     const PAYMENT_METHOD = "payment_method";
-    const SHIPPING_METHOD = "shipping_method";
     const ITEMS = "items";
     const DISCOUNT = "discount";
     const DISCOUNT_DESCRIPTION = "discount_description";
@@ -26,60 +21,17 @@ interface OrderCreateRequestInterface
      */
     public function setCustomerId($customerId);
 
-    /**
-     * @return string|null
-     */
-    public function getCustomerEmail();
 
     /**
-     * @param string $customerEmail
+     * @return \Magento\Checkout\Api\Data\ShippingInformationInterface|null
+     */
+    public function getShippingInformation();
+
+    /**
+     * @param \Magento\Checkout\Api\Data\ShippingInformationInterface $shippingInformation
      * @return $this
      */
-    public function setCustomerEmail($customerEmail);
-
-    /**
-     * @return string|null
-     */
-    public function getCustomerFirstname();
-
-    /**
-     * @param string $customerFirstname
-     * @return $this
-     */
-    public function setCustomerFirstname($customerFirstname);
-
-    /**
-     * @return string|null
-     */
-    public function getCustomerLastname();
-
-    /**
-     * @param string $customerLastname
-     * @return $this
-     */
-    public function setCustomerLastname($customerLastname);
-
-    /**
-     * @return \Magento\Quote\Api\Data\AddressInterface|null
-     */
-    public function getShippingAddress();
-
-    /**
-     * @param \Magento\Quote\Api\Data\AddressInterface $shippingAddress
-     * @return $this
-     */
-    public function setShippingAddress($shippingAddress);
-
-    /**
-     * @return \Magento\Quote\Api\Data\AddressInterface|null
-     */
-    public function getBillingAddress();
-
-    /**
-     * @param \Magento\Quote\Api\Data\AddressInterface $billingAddress
-     * @return $this
-     */
-    public function setBillingAddress($billingAddress);
+    public function setShippingInformation($shippingInformation);
 
     /**
      * @return string|null
@@ -91,17 +43,6 @@ interface OrderCreateRequestInterface
      * @return $this
      */
     public function setPaymentMethod($paymentMethod);
-
-    /**
-     * @return string|null
-     */
-    public function getShippingMethod();
-
-    /**
-     * @param string $shippingMethod
-     * @return $this
-     */
-    public function setShippingMethod($shippingMethod);
 
     /**
      * @return \Magento\Quote\Api\Data\CartItemInterface[]|null
