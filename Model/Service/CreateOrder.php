@@ -18,6 +18,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Mageserv\Yamm\Api\OrderRepositoryInterface;
 use Mageserv\Yamm\Api\Service\CreateOrderInterface;
+use Mageserv\Yamm\Model\Quote\Discount;
 
 class CreateOrder implements CreateOrderInterface
 {
@@ -46,7 +47,8 @@ class CreateOrder implements CreateOrderInterface
             $quote->getPayment()->setMethod($order->getPaymentMethod());
             $this->cartRepository->save($quote);
             if($order->getDiscount()){
-                $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());
+                $quote->setData(Discount::DISCOUNT_CODE, $order->getDiscount());
+                $quote->setData(Discount::LABEL_DATA_FIELD, $order->getDiscountDescription());
             }
             $quote->collectTotals();
             $this->cartRepository->save($quote);
@@ -90,19 +92,5 @@ class CreateOrder implements CreateOrderInterface
             $quoteId =  $this->quoteManagement->createEmptyCart();
         }
         return $this->cartRepository->get($quoteId);
-    }
-
-    private function applyCustomDiscount(CartInterface $quote, ?float $discount = 0, ?string $discountDescription = null)
-    {
-        if(!$discountDescription){
-            $discountDescription = __("Yamm Discount");
-        }
-        $quote->setData('yamm_discount', -$discount);
-        $quote->setData('yamm_discount_description', $discountDescription);
-        foreach($quote->getAllAddresses() as $address){
-            $address->setDiscountAmount(-$discount)
-                ->setBaseDiscountAmount(-$discount)
-                ->setDiscountDescription($discountDescription);
-        }
     }
 }
