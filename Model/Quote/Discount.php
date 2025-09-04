@@ -34,19 +34,19 @@ class Discount extends \Magento\Quote\Model\Quote\Address\Total\AbstractTotal
         }
         $label = $quote->getData(self::LABEL_DATA_FIELD) ?: self::LABEL;
         $appliedCartDiscount = $total->getDiscountAmount();
-        $discountAmount = $total->getDiscountAmount() + $quote->getData(self::DISCOUNT_CODE);
+        $discountAmount = $total->getDiscountAmount() - $quote->getData(self::DISCOUNT_CODE);
         $total->setDiscountDescription($label);
-        $total->setDiscountAmount($discountAmount);
-        $total->setBaseDiscountAmount($discountAmount);
-        $total->setSubtotalWithDiscount($total->getSubtotal() + $discountAmount);
-        $total->setBaseSubtotalWithDiscount($total->getBaseSubtotal() + $discountAmount);
+        $total->setDiscountAmount(-$discountAmount);
+        $total->setBaseDiscountAmount(-$discountAmount);
+        $total->setSubtotalWithDiscount($total->getSubtotal() - $discountAmount);
+        $total->setBaseSubtotalWithDiscount($total->getBaseSubtotal() - $discountAmount);
 
         if (isset($appliedCartDiscount)) {
-            $total->addTotalAmount($this->getCode(), $discountAmount - $appliedCartDiscount);
-            $total->addBaseTotalAmount($this->getCode(), $discountAmount - $appliedCartDiscount);
+            $total->addTotalAmount($this->getCode(), $appliedCartDiscount - $discountAmount );
+            $total->addBaseTotalAmount($this->getCode(), $appliedCartDiscount - $discountAmount );
         } else {
-            $total->addTotalAmount($this->getCode(), $discountAmount);
-            $total->addBaseTotalAmount($this->getCode(), $discountAmount);
+            $total->addTotalAmount($this->getCode(), -$discountAmount);
+            $total->addBaseTotalAmount($this->getCode(), -$discountAmount);
         }
 
         return $this;

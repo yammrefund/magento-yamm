@@ -97,11 +97,6 @@ class CreateOrder implements CreateOrderInterface
     {
         $quote->setData(Discount::DISCOUNT_CODE, $discount);
         $quote->setData(Discount::LABEL_DATA_FIELD, $discountDescription);
-        foreach($quote->getAllAddresses() as $address){
-            $address->setDiscountAmount(-$discount)
-                ->setBaseDiscountAmount(-$discount)
-                ->setDiscountDescription($discountDescription);
-        }
         $this->cartRepository->save($quote);
     }
 }
