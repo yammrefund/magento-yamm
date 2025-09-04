@@ -52,6 +52,9 @@ class CreateOrder implements CreateOrderInterface
             $quote->getPayment()->setMethod($order->getPaymentMethod());
             $this->cartRepository->save($quote);
             if ($order->getDiscount()) {
+                if($order->getDiscount() > $quote->getGrandTotal()) {
+                    throw new LocalizedException(__('Discount amount cannot be greater than order amount'));
+                }
                 $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());
             }
             $quote->collectTotals();
