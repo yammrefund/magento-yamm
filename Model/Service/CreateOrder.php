@@ -23,10 +23,10 @@ use Mageserv\Yamm\Model\Quote\Discount;
 class CreateOrder implements CreateOrderInterface
 {
     public function __construct(
-        private readonly CartManagementInterface $quoteManagement,
-        private readonly CartRepositoryInterface $cartRepository,
+        private readonly CartManagementInterface     $quoteManagement,
+        private readonly CartRepositoryInterface     $cartRepository,
         private readonly CustomerRepositoryInterface $customerRepository,
-        private readonly OrderRepositoryInterface $orderRepository
+        private readonly OrderRepositoryInterface    $orderRepository
     )
     {
     }
@@ -34,9 +34,10 @@ class CreateOrder implements CreateOrderInterface
 
     public function execute(\Mageserv\Yamm\Api\Data\OrderCreateRequestInterface $order): \Mageserv\Yamm\Api\Data\OrderInterface
     {
-        try{
+        try {
             $this->validateRequest($order);
             $quote = $this->createQuote($order);
+            $quote->setItems(null); // reset cart
             $quote->setItems($order->getItems());
             $quote->getBillingAddress()->addData($order->getShippingAddress()->getData());
             $quote->getShippingAddress()->addData($order->getBillingAddress()->getData());
@@ -46,15 +47,15 @@ class CreateOrder implements CreateOrderInterface
                 ->setShippingMethod($order->getShippingMethod());
             $quote->getPayment()->setMethod($order->getPaymentMethod());
             $this->cartRepository->save($quote);
-            if($order->getDiscount()){
+            if ($order->getDiscount()) {
                 $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());
             }
             $quote->collectTotals();
             $this->cartRepository->save($quote);
             $orderId = $this->quoteManagement->placeOrder($quote->getId());
             return $this->orderRepository->getById($orderId);
-        }catch (\Exception $e){
-            throw new LocalizedException(__('Unable to create order. %1', $e->getMessage() ));
+        } catch (\Exception $e) {
+            throw new LocalizedException(__('Unable to create order. %1', $e->getMessage()));
         }
     }
 
@@ -64,17 +65,17 @@ class CreateOrder implements CreateOrderInterface
      */
     private function validateRequest(\Mageserv\Yamm\Api\Data\OrderCreateRequestInterface $order): void
     {
-        if($order->getCustomerId()){
-            try{
+        if ($order->getCustomerId()) {
+            try {
                 $this->customerRepository->getById($order->getCustomerId());
-            }catch (NoSuchEntityException $e){
+            } catch (NoSuchEntityException $e) {
                 throw new LocalizedException(__('Customer with id %1 not found', $order->getCustomerId()));
             }
         }
-        if(!$order->getPaymentMethod()){
+        if (!$order->getPaymentMethod()) {
             throw new LocalizedException(__('Payment Method is required'));
         }
-        if(!$order->getShippingMethod()){
+        if (!$order->getShippingMethod()) {
             throw new LocalizedException(__('Shipping Method is required'));
         }
     }
@@ -85,10 +86,10 @@ class CreateOrder implements CreateOrderInterface
      */
     private function createQuote(\Mageserv\Yamm\Api\Data\OrderCreateRequestInterface $order): CartInterface
     {
-        if($order->getCustomerId()){
-            $quoteId =  $this->quoteManagement->createEmptyCartForCustomer($order->getCustomerId());
-        }else{
-            $quoteId =  $this->quoteManagement->createEmptyCart();
+        if ($order->getCustomerId()) {
+            $quoteId = $this->quoteManagement->createEmptyCartForCustomer($order->getCustomerId());
+        } else {
+            $quoteId = $this->quoteManagement->createEmptyCart();
         }
         return $this->cartRepository->get($quoteId);
     }
