@@ -18,6 +18,7 @@ interface OrderRepositoryInterface
      * @return \Mageserv\Yamm\Api\Data\OrderSearchResultInterface Order search result interface.
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
+
     /**
      * Loads a specified order.
      *
@@ -25,6 +26,15 @@ interface OrderRepositoryInterface
      * @return \Mageserv\Yamm\Api\Data\OrderInterface interface.
      */
     public function get($id);
+
+    /**
+     * Loads a specified order.
+     *
+     * @param int $id The order ID.
+     * @return \Mageserv\Yamm\Api\Data\OrderInterface interface.
+     */
+    public function getById(int $id);
+
     /**
      * @param string $orderId
      * @param \Mageserv\Yamm\Api\Data\RefundItemInterface[] $refundItems
@@ -34,6 +44,7 @@ interface OrderRepositoryInterface
      * @throws \Magento\Framework\Exception\InputException
      */
     public function processRefund($orderId, $refundItems);
+
     /**
      * @param string $orderId
      * @param \Mageserv\Yamm\Api\Data\RefundItemInterface[] $refundItems
@@ -43,6 +54,7 @@ interface OrderRepositoryInterface
      * @throws \Magento\Framework\Exception\InputException
      */
     public function prepareRefund($orderId, $refundItems);
+
     /**
      * @param string $orderId
      * @param \Mageserv\Yamm\Api\Data\RefundItemInterface[] $refundItems
@@ -52,6 +64,7 @@ interface OrderRepositoryInterface
      * @throws \Magento\Framework\Exception\InputException
      */
     public function rejectRefund($orderId, $refundItems);
+
     /**
      * @param string $orderId
      * @return bool
@@ -79,6 +92,7 @@ interface OrderRepositoryInterface
      */
 
     public function assignStatus($id, $state, $status);
+
     /**
      * Get all order statuses with state, status, and status label
      *

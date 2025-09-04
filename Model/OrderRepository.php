@@ -162,6 +162,14 @@ class OrderRepository implements \Mageserv\Yamm\Api\OrderRepositoryInterface
         $order = $this->orderFactory->create()->loadByIncrementId($id);
         return $this->mapOrdertoYammOrder($order);
     }
+    /**
+     * @inheritdoc
+     */
+    public function getById(int $id)
+    {
+        $order = $this->orderFactory->create()->load($id);
+        return $this->mapOrdertoYammOrder($order);
+    }
 
     /**
      * @param OrderInterface $order

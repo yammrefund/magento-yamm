@@ -37,9 +37,8 @@ class CreateOrder implements CreateOrderInterface
             $this->validateRequest($order);
             $quote = $this->createQuote($order);
             $quote->setItems($order->getItems());
-            //Set Address to quote
-            $quote->getBillingAddress()->addData($order->getShippingAddress()->toArray());
-            $quote->getShippingAddress()->addData($order->getBillingAddress()->toArray());
+            $quote->getBillingAddress()->addData($order->getShippingAddress()->getData());
+            $quote->getShippingAddress()->addData($order->getBillingAddress()->getData());
             $quote->getShippingAddress()
                 ->setCollectShippingRates(true)
                 ->collectShippingRates()
@@ -52,7 +51,7 @@ class CreateOrder implements CreateOrderInterface
             $quote->collectTotals();
             $this->cartRepository->save($quote);
             $orderId = $this->quoteManagement->placeOrder($quote->getId());
-            return $this->orderRepository->get($orderId);
+            return $this->orderRepository->getById($orderId);
         }catch (\Exception $e){
             throw new LocalizedException(__('Unable to create order. %1', $e->getMessage() ));
         }
@@ -73,6 +72,9 @@ class CreateOrder implements CreateOrderInterface
         }
         if(!$order->getPaymentMethod()){
             throw new LocalizedException(__('Payment Method is required'));
+        }
+        if(!$order->getShippingMethod()){
+            throw new LocalizedException(__('Shipping Method is required'));
         }
     }
 
