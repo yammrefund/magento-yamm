@@ -45,6 +45,7 @@ class CreateOrder implements CreateOrderInterface
                 ->collectShippingRates()
                 ->setShippingMethod($order->getShippingMethod());
             $quote->getPayment()->setMethod($order->getPaymentMethod());
+            $this->cartRepository->save($quote);
             if($order->getDiscount()){
                 $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());
             }
