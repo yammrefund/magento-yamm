@@ -14,6 +14,12 @@
             <resource ref="Mageserv_Yamm::api"/>
         </resources>
     </route>
+    <route url="/V1/yamm/create-order" method="POST">
+        <service class="Mageserv\Yamm\Api\Service\CreateOrderInterface" method="execute"/>
+        <resources>
+            <resource ref="Mageserv_Yamm::api"/>
+        </resources>
+    </route>
     <route url="/V1/yamm/refund/:orderId" method="POST">
         <service class="Mageserv\Yamm\Api\OrderRepositoryInterface" method="processRefund"/>
         <resources>

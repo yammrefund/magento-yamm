@@ -30,7 +30,8 @@ class CreateOrder implements CreateOrderInterface
     {
     }
 
-    public function execute(\Mageserv\Yamm\Api\Data\OrderCreateRequestInterface $order)
+
+    public function execute(\Mageserv\Yamm\Api\Data\OrderCreateRequestInterface $order): \Mageserv\Yamm\Api\Data\OrderInterface
     {
         try{
             $this->validateRequest($order);
@@ -79,6 +80,12 @@ class CreateOrder implements CreateOrderInterface
             if(!$order->getCustomerLastname()){
                 throw new LocalizedException(__('Customer Last name is required'));
             }
+        }
+        if(!$order->getPaymentMethod()){
+            throw new LocalizedException(__('Payment Method is required'));
+        }
+        if(!$order->getShippingMethod()){
+            throw new LocalizedException(__('Shipping Method is required'));
         }
     }
 
