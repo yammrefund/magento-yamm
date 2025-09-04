@@ -9,7 +9,6 @@
 namespace Mageserv\Yamm\Model\Service;
 
 
-use Magento\Checkout\Api\ShippingInformationManagementInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
@@ -26,8 +25,7 @@ class CreateOrder implements CreateOrderInterface
         private readonly CartManagementInterface $quoteManagement,
         private readonly CartRepositoryInterface $cartRepository,
         private readonly CustomerRepositoryInterface $customerRepository,
-        private readonly OrderRepositoryInterface $orderRepository,
-        private readonly ShippingInformationManagementInterface $shippingInformationManagement
+        private readonly OrderRepositoryInterface $orderRepository
     )
     {
     }
@@ -39,7 +37,13 @@ class CreateOrder implements CreateOrderInterface
             $this->validateRequest($order);
             $quote = $this->createQuote($order);
             $quote->setItems($order->getItems());
-            $this->shippingInformationManagement->saveAddressInformation($quote->getId(), $order->getShippingInformation());
+            //Set Address to quote
+            $quote->getBillingAddress()->addData($order->getShippingAddress()->toArray());
+            $quote->getShippingAddress()->addData($order->getBillingAddress()->toArray());
+            $quote->getShippingAddress()
+                ->setCollectShippingRates(true)
+                ->collectShippingRates()
+                ->setShippingMethod($order->getShippingMethod());
             $quote->getPayment()->setMethod($order->getPaymentMethod());
             if($order->getDiscount()){
                 $this->applyCustomDiscount($quote, $order->getDiscount(), $order->getDiscountDescription());

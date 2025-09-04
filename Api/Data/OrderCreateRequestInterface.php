@@ -5,8 +5,11 @@ namespace Mageserv\Yamm\Api\Data;
 interface OrderCreateRequestInterface
 {
     const CUSTOMER_ID = "customer_id";
-    const SHIPPING_INFORMATION = "shipping_information";
+
+    const SHIPPING_ADDRESS = "shipping_address";
+    const BILLING_ADDRESS = "billing_address";
     const PAYMENT_METHOD = "payment_method";
+    const SHIPPING_METHOD = "shipping_method";
     const ITEMS = "items";
     const DISCOUNT = "discount";
     const DISCOUNT_DESCRIPTION = "discount_description";
@@ -23,15 +26,26 @@ interface OrderCreateRequestInterface
 
 
     /**
-     * @return \Magento\Checkout\Api\Data\ShippingInformationInterface|null
+     * @return \Magento\Quote\Api\Data\AddressInterface|null
      */
-    public function getShippingInformation();
+    public function getShippingAddress();
 
     /**
-     * @param \Magento\Checkout\Api\Data\ShippingInformationInterface $shippingInformation
+     * @param \Magento\Quote\Api\Data\AddressInterface $shippingAddress
      * @return $this
      */
-    public function setShippingInformation($shippingInformation);
+    public function setShippingAddress($shippingAddress);
+
+    /**
+     * @return \Magento\Quote\Api\Data\AddressInterface|null
+     */
+    public function getBillingAddress();
+
+    /**
+     * @param \Magento\Quote\Api\Data\AddressInterface $billingAddress
+     * @return $this
+     */
+    public function setBillingAddress($billingAddress);
 
     /**
      * @return string|null
@@ -43,6 +57,17 @@ interface OrderCreateRequestInterface
      * @return $this
      */
     public function setPaymentMethod($paymentMethod);
+
+    /**
+     * @return string|null
+     */
+    public function getShippingMethod();
+
+    /**
+     * @param string $shippingMethod
+     * @return $this
+     */
+    public function setShippingMethod($shippingMethod);
 
     /**
      * @return \Magento\Quote\Api\Data\CartItemInterface[]|null

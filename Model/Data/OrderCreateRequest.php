@@ -34,19 +34,34 @@ class OrderCreateRequest extends DataObject implements OrderCreateRequestInterfa
     /**
      * @inheritDoc
      */
-    public function getShippingInformation()
+    public function getShippingAddress()
     {
-        return $this->_getData(self::SHIPPING_INFORMATION);
+        return $this->_getData(self::SHIPPING_ADDRESS);
     }
 
     /**
      * @inheritDoc
      */
-    public function setShippingInformation($shippingInformation)
+    public function setShippingAddress($shippingAddress)
     {
-        return $this->setData(self::SHIPPING_INFORMATION, $shippingInformation);
+        return $this->setData(self::SHIPPING_ADDRESS, $shippingAddress);
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getBillingAddress()
+    {
+        return $this->_getData(self::BILLING_ADDRESS);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setBillingAddress($billingAddress)
+    {
+        return $this->setData(self::BILLING_ADDRESS, $billingAddress);
+    }
 
     /**
      * @inheritDoc
@@ -62,6 +77,22 @@ class OrderCreateRequest extends DataObject implements OrderCreateRequestInterfa
     public function setPaymentMethod($paymentMethod)
     {
         return $this->setData(self::PAYMENT_METHOD, $paymentMethod);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getShippingMethod()
+    {
+        return $this->_getData(self::SHIPPING_METHOD);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setShippingMethod($shippingMethod)
+    {
+        return $this->setData(self::SHIPPING_METHOD, $shippingMethod);
     }
 
     /**
