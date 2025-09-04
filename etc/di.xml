@@ -39,6 +39,10 @@
                 type="Mageserv\Yamm\Model\CatalogManagement"/>
     <preference for="Mageserv\Yamm\Api\Data\ExtendedOrderItemInterface"
                 type="Mageserv\Yamm\Model\Data\ExtendedOrderItem"/>
+    <preference for="Mageserv\Yamm\Api\Service\CreateOrderInterface"
+                type="Mageserv\Yamm\Model\Service\CreateOrder"/>
+    <preference for="Mageserv\Yamm\Api\Data\OrderCreateRequestInterface"
+                type="Mageserv\Yamm\Model\Data\OrderCreateRequest"/>
     <!--Grid collection-->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
