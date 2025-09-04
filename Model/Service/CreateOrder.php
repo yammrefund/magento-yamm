@@ -100,7 +100,7 @@ class CreateOrder implements CreateOrderInterface
 
     private function applyCustomDiscount(CartInterface $quote, ?float $discount = 0, ?string $discountDescription = null)
     {
-        $quote->setData(Discount::DISCOUNT_CODE, $discount);
+        $quote->setData(Discount::DISCOUNT_CODE, -$discount);
         $quote->setData(Discount::LABEL_DATA_FIELD, $discountDescription);
         $this->cartRepository->save($quote);
     }
