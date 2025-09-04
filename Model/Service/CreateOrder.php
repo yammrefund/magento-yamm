@@ -9,6 +9,7 @@
 namespace Mageserv\Yamm\Model\Service;
 
 
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
@@ -26,7 +27,8 @@ class CreateOrder implements CreateOrderInterface
         private readonly CartManagementInterface     $quoteManagement,
         private readonly CartRepositoryInterface     $cartRepository,
         private readonly CustomerRepositoryInterface $customerRepository,
-        private readonly OrderRepositoryInterface    $orderRepository
+        private readonly OrderRepositoryInterface    $orderRepository,
+        private readonly ProductRepositoryInterface    $productRepository
     )
     {
     }
@@ -38,9 +40,9 @@ class CreateOrder implements CreateOrderInterface
             $this->validateRequest($order);
             $quote = $this->createQuote($order);
             foreach ($order->getItems() as $item) {
-                $quote->addItem($item);
+                $product = $this->productRepository->get($item->getSku());
+                $quote->addProduct($product, intval($item->getQty()));
             }
-            $this->cartRepository->save($quote);
             $quote->getBillingAddress()->addData($order->getShippingAddress()->getData());
             $quote->getShippingAddress()->addData($order->getBillingAddress()->getData());
             $quote->getShippingAddress()
